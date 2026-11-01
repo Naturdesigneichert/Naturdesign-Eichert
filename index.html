@@ -334,18 +334,26 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
               <div class="chosen" id="chosen">Noch kein Termin gewählt</div>
               <label for="f-name">Name<input id="f-name" autocomplete="name" required></label>
               <label for="f-phone">Telefon<input id="f-phone" type="tel" autocomplete="tel" required></label>
+              <label for="f-email">E-Mail (optional)<input id="f-email" type="email" autocomplete="email"></label>
+              <input type="text" id="f-hp" tabindex="-1" autocomplete="off" aria-hidden="true" hidden>
               <label for="f-addr">Adresse des Gartens<input id="f-addr" autocomplete="street-address" required></label>
               <label for="f-kind">Worum geht es?
                 <select id="f-kind"><option>Terrasse / Pflaster</option><option>Rasen</option><option>Hecke / Gehölze</option><option>Zaun / Sichtschutz</option><option>Gartengestaltung</option><option>Gartenpflege (einmalig)</option><option>Pflege-Abo Basis</option><option>Pflege-Abo Komfort</option><option>Pflege-Abo Rundum</option><option>Sonstiges</option></select>
               </label>
               <label for="f-msg">Kurze Beschreibung (optional)<textarea id="f-msg" placeholder="z. B. ca. 30 m² Terrasse, alte Platten müssen raus"></textarea></label>
               <p class="err" id="err" hidden></p>
-              <button class="btn" type="submit">Termin anfragen</button>
+              <button class="btn" type="submit" id="sendBtn">Anfrage absenden</button>
             </form>
           </div>
+          <div class="done" id="sent" hidden>
+            <h3>Anfrage gesendet</h3>
+            <p>Vielen Dank. Ihre Anfrage ist eingegangen. Sie erhalten zeitnah eine Bestätigung oder einen Alternativtermin.</p>
+            <pre id="sentSummary"></pre>
+            <div class="row"><button class="btn ghost" id="newBtn" type="button">Neue Anfrage</button></div>
+          </div>
           <div class="done" id="done" hidden>
-            <h3>Anfrage vorbereitet</h3>
-            <p>Bitte senden Sie diese Anfrage per E-Mail. Sie erhalten zeitnah eine Bestätigung oder einen Alternativtermin.</p>
+            <h3>Bitte per E-Mail senden</h3>
+            <p>Der direkte Versand ist gerade nicht möglich. Bitte senden Sie die Anfrage per E-Mail oder rufen Sie kurz an.</p>
             <pre id="summary"></pre>
             <p>An: <strong>naturdesigneichert@web.de</strong> · Oder rufen Sie an: <strong>0157 37586357</strong></p>
             <div class="row">
@@ -482,11 +490,35 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
     const miss=[];if(!selTime)miss.push('eine Uhrzeit');if(!v('f-name'))miss.push('Ihren Namen');if(!v('f-phone'))miss.push('Ihre Telefonnummer');if(!v('f-addr'))miss.push('die Adresse');
     if(miss.length){err.textContent='Bitte noch angeben: '+miss.join(', ')+'.';err.hidden=false;return}
     err.hidden=true;
-    text='Terminanfrage Besichtigung\n\nWunschtermin: '+fmt(selDay)+', '+selTime+' Uhr\nName: '+v('f-name')+'\nTelefon: '+v('f-phone')+'\nAdresse: '+v('f-addr')+'\nAnliegen: '+v('f-kind')+(v('f-msg')?'\nBeschreibung: '+v('f-msg'):'');
+    text='Terminanfrage Besichtigung\n\nWunschtermin: '+fmt(selDay)+', '+selTime+' Uhr\nName: '+v('f-name')+'\nTelefon: '+v('f-phone')+(v('f-email')?'\nE-Mail: '+v('f-email'):'')+'\nAdresse: '+v('f-addr')+'\nAnliegen: '+v('f-kind')+(v('f-msg')?'\nBeschreibung: '+v('f-msg'):'');
     document.getElementById('summary').textContent=text;
     document.getElementById('mailLink').href='mailto:naturdesigneichert@web.de?subject='+encodeURIComponent('Terminanfrage '+fmt(selDay)+', '+selTime+' Uhr')+'&body='+encodeURIComponent(text);
-    document.getElementById('formWrap').hidden=true;document.getElementById('done').hidden=false;
+    send();
   });
+  const sendBtn=document.getElementById('sendBtn');
+  function showDone(){document.getElementById('formWrap').hidden=true;document.getElementById('done').hidden=false}
+  async function send(){
+    if(document.getElementById('f-hp').value)return;
+    sendBtn.disabled=true;sendBtn.textContent='Wird gesendet …';
+    const subj='Terminanfrage '+fmt(selDay)+', '+selTime+' Uhr – '+v('f-name');
+    const payload={_subject:subj,_template:'table',_captcha:'false',
+      Wunschtermin:fmt(selDay)+', '+selTime+' Uhr',Name:v('f-name'),Telefon:v('f-phone'),
+      Adresse:v('f-addr'),Anliegen:v('f-kind'),Beschreibung:v('f-msg')||'–'};
+    if(v('f-email'))payload.email=v('f-email');
+    try{
+      const ctl=new AbortController();const tm=setTimeout(()=>ctl.abort(),15000);
+      const r=await fetch('https://formsubmit.co/ajax/naturdesigneichert@web.de',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(payload),signal:ctl.signal});
+      clearTimeout(tm);
+      const j=await r.json().catch(()=>({}));
+      if(r.ok&&String(j.success)==='true'){
+        document.getElementById('sentSummary').textContent=text;
+        document.getElementById('formWrap').hidden=true;document.getElementById('sent').hidden=false;
+        form.reset();
+      }else showDone();
+    }catch(e){showDone()}
+    sendBtn.disabled=false;sendBtn.textContent='Anfrage absenden';
+  }
+  document.getElementById('newBtn').onclick=()=>{document.getElementById('sent').hidden=true;document.getElementById('formWrap').hidden=false};
   document.getElementById('backBtn').onclick=()=>{document.getElementById('formWrap').hidden=false;document.getElementById('done').hidden=true};
   const cb=document.getElementById('copyBtn');
   cb.onclick=()=>{navigator.clipboard.writeText(text).then(()=>{cb.textContent='Kopiert'},()=>{const r=document.createRange();r.selectNodeContents(document.getElementById('summary'));const s=getSelection();s.removeAllRanges();s.addRange(r);cb.textContent='Text markiert'})};
