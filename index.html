@@ -25,6 +25,7 @@
   "telephone": "+49 157 37586357",
   "email": "naturdesigneichert@web.de",
   "founder": "Ricardo Ovington",
+  "sameAs": ["https://www.google.com/maps/place/?q=place_id:ChIJs3_3MOvLvUcRwFVT2gw96lM"],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "Kolbstraße 2",
@@ -291,21 +292,105 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
 @media (max-width:480px){.nav{height:68px}.logo img{height:46px}}
 
 /* Scroll-Animationen (nur mit JavaScript aktiv, sonst ist alles sofort sichtbar) */
-.js .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
 .js .reveal.from-left{transform:translateX(-48px)}
-.js .reveal.from-right{transform:translateX(48px)}
+.js .reveal.from-right{transform:translateX(24px)}
 .js .reveal.zoom{transform:scale(.92)}
 .js .reveal.in{opacity:1;transform:none}
 .js .band-head .eyebrow{display:inline-block;clip-path:inset(0 100% 0 0);transition:clip-path .9s .15s cubic-bezier(.2,.8,.2,1)}
-.js .band-head:has(.in,.seen) .eyebrow{clip-path:inset(0 0 0 0)}
+.js .band-head:has(.in,.seen,.on) .eyebrow{clip-path:inset(0 0 0 0)}
 @media (prefers-reduced-motion:reduce){.js .reveal{opacity:1;transform:none}.js .band-head .eyebrow{clip-path:none}.scroll-bar{display:none}}
+.hero .h1-by{margin:.2rem 0 1rem;font:500 .9rem/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--fg);animation:up .8s .1s cubic-bezier(.2,.8,.2,1) both}
+@media (min-width:1100px){.hero .h1-by{font-size:1rem}}
+.band-head .h2-sub{margin-top:.7rem;font:italic 1.35rem/1.3 var(--serif);color:var(--sand)}
+@media (min-width:1100px){.band-head .h2-sub{font-size:1.55rem}}
+
+html,body{overflow-x:clip}
+/* ===== Mehr Bewegung ===== */
+/* Wort-für-Wort-Einblendung für Überschriften */
+.split .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.12em;margin-bottom:-.12em}
+.split .w>span{display:inline-block;transform:translateY(100%);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.split.on .w>span{transform:none}
+.hero h1.split{animation:none}
+/* Hero-Foto: Vorhang-Effekt + Parallaxe */
+.hero-photo{animation:curtain 1.3s .15s cubic-bezier(.7,0,.2,1) both;will-change:transform}
+@keyframes curtain{from{clip-path:inset(100% 0 0 0)}to{clip-path:inset(0 0 0 0)}}
+.hero-photo img{animation:settle 2.2s .15s cubic-bezier(.2,.8,.2,1) both}
+@keyframes settle{from{transform:scale(1.06)}to{transform:none}}
+/* Leistungen: Akzentlinie wächst */
+.svc::before{content:"";display:block;width:44px;height:3px;border-radius:2px;background:var(--moss);transform-origin:left;transition:transform .9s .25s cubic-bezier(.2,.8,.2,1)}
+.js .svc.reveal:not(.in)::before{transform:scaleX(0)}
+/* Galerie: Wischeffekt + Zoom */
+.js .tile.reveal.wipe{opacity:1;transform:none}
+.js .tile.reveal.wipe::after{content:"";position:absolute;inset:0;z-index:3;background:var(--bg);transform-origin:top;transition:transform 1.1s cubic-bezier(.7,0,.2,1);transition-delay:inherit}
+.js .tile.reveal.wipe.in::after{transform:scaleY(0)}
+.js .tile.reveal.wipe .ph{transform:scale(1.3);transition:transform 1.6s cubic-bezier(.2,.8,.2,1)}
+.js .tile.reveal.wipe.in .ph{transform:none}
+.tile{transform-style:preserve-3d;will-change:transform}
+/* Pflege-Abo: hervorgehobenes Paket leuchtet */
+@keyframes glow{0%,100%{box-shadow:0 0 0 1px var(--moss),0 0 0 0 color-mix(in srgb,var(--moss) 0%,transparent)}50%{box-shadow:0 0 0 1px var(--moss),0 0 26px 0 color-mix(in srgb,var(--moss) 22%,transparent)}}
+/* Buttons: Lichtreflex */
+.btn:not(.ghost){position:relative;overflow:hidden}
+.btn:not(.ghost)::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);transform:translateX(-130%);pointer-events:none}
+.btn:not(.ghost):hover::after{transition:transform .7s;transform:translateX(130%)}
+/* Einsatzgebiet: Puls um Hünfelden */
+.towns span.home{position:relative}
+@keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+@media (prefers-reduced-motion:reduce){.split .w>span{transform:none}.js .tile.reveal.wipe::after{display:none}.js .tile.reveal.wipe .ph{transform:none}.hero-photo{transform:none!important}}
+
+/* Ortssuche Einsatzgebiet */
+.ortsuche{margin-top:1.8rem;display:grid;gap:.6rem;max-width:30rem;position:relative}
+.ortsuche label{font-weight:600}
+.ort-row{display:flex;gap:.5rem;position:relative}
+.ort-row input{flex:1;min-width:0}
+.ort-row .btn{padding-inline:1.1rem}
+.ort-sug{list-style:none;margin:0;padding:.3rem;position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 36px -20px rgba(0,0,0,.35);max-height:16rem;overflow:auto}
+.ort-sug li{padding:.55rem .7rem;border-radius:8px;cursor:pointer;display:flex;justify-content:space-between;gap:1rem}
+.ort-sug li small{font:400 .75rem var(--mono);color:var(--muted);white-space:nowrap}
+.ort-sug li[aria-selected="true"],.ort-sug li:hover{background:var(--tint)}
+.ort-res:empty{display:none}
+.ort-res{padding:1rem 1.1rem;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:grid;gap:.7rem;animation:up .5s cubic-bezier(.2,.8,.2,1) both}
+.ort-res.ok{border-color:var(--moss);background:color-mix(in srgb,var(--moss) 10%,var(--surface))}
+.ort-res.near{border-color:var(--sand);background:color-mix(in srgb,var(--sand) 10%,var(--surface))}
+.ort-res p{margin:0}
+.ort-res .btn{justify-self:start}
+.ort-src{font:400 .7rem var(--mono);color:var(--muted)}
+.towns span.hit{background:var(--moss);color:var(--moss-ink);border-color:var(--moss)}
+
+/* Referenzen / Google-Bewertungen */
+.stars{color:#E3A63E;letter-spacing:.08em}
+.rating-badge{animation:up .8s .4s cubic-bezier(.2,.8,.2,1) both;display:inline-flex;align-items:center;gap:.6rem;margin-top:1.4rem;padding:.5rem .9rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);text-decoration:none;font-size:.9rem;color:var(--muted);transition:border-color .2s,transform .2s}
+.rating-badge b{color:var(--fg)}
+.rating-badge:hover{border-color:var(--sun);transform:translateY(-2px)}
+.ref-cta{margin-top:2rem;display:flex;justify-content:center}
+.reviews{width:min(880px,calc(100% - 32px));max-height:min(88vh,900px);padding:0;border:1px solid var(--line);border-radius:16px;background:var(--bg);color:var(--fg);box-shadow:0 40px 80px -30px rgba(0,0,0,.5)}
+.reviews::backdrop{background:rgba(10,14,11,.7);backdrop-filter:blur(3px)}
+.reviews[open]{animation:rvIn .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes rvIn{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:none}}
+.rv-wrap{padding:clamp(1.4rem,4vw,2.6rem);display:grid;gap:1.2rem;position:relative}
+.rv-wrap h2{margin-top:-.4rem}
+.rv-close{position:absolute;top:1rem;right:1rem;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:.45rem .9rem;color:var(--fg);font:500 .85rem var(--body);cursor:pointer}
+.rv-sum{display:flex;align-items:center;gap:1rem}
+.rv-score{font:400 3rem/1 var(--display)}
+.rv-sum .stars{font-size:1.3rem;display:block}
+.rv-sum small{color:var(--muted);font:400 .78rem var(--mono)}
+.rv-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.rv{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1.2rem;display:grid;gap:.6rem;align-content:start;font-size:.95rem}
+.rv p{color:var(--muted)}
+.rv-head{display:flex;align-items:center;gap:.7rem}
+.rv-head div{display:grid;flex:1;min-width:0}
+.rv-head small{font:400 .72rem var(--mono);color:var(--muted)}
+.rv-av{width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;background:var(--moss);color:var(--moss-ink);font-weight:600;flex:none}
+.rv-actions{display:flex;flex-wrap:wrap;gap:.7rem}
+.rv-note{font:400 .72rem var(--mono);color:var(--muted)}
+body:has(.reviews[open]){overflow:hidden}
 </style>
 
 <header>
   <div class="wrap nav">
     <a class="logo" href="#top" aria-label="Naturdesign Eichert, nach oben"><img class="logo-l" width="465" height="120" src="assets/img/logo-hell.png" alt="Naturdesign Eichert"><img class="logo-d" width="465" height="120" src="assets/img/logo-dunkel.png" alt="Naturdesign Eichert"></a>
     <nav class="links" aria-label="Hauptmenü">
-      <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a>
+      <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a>
       <a class="btn" href="#termin">Besichtigung buchen</a>
     </nav>
     <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="overlayMenu">Menü</button>
@@ -316,14 +401,15 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
 <div class="overlay-menu" id="overlayMenu" hidden>
   <button id="menuClose">Schließen</button>
   <img class="logo-l om-logo" width="465" height="120" src="assets/img/logo-hell.png" alt=""><img class="logo-d om-logo" width="465" height="120" src="assets/img/logo-dunkel.png" alt="">
-  <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a><a href="#termin">Termin buchen</a>
+  <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a><a href="#termin">Termin buchen</a>
 </div>
 
 <main id="top">
   <div class="wrap hero"><span class="leaf" style="left:8%;animation-delay:-3s" aria-hidden="true"></span><span class="leaf" style="left:46%;animation-delay:-9s;width:12px;height:12px" aria-hidden="true"></span><span class="leaf" style="left:70%;animation-delay:-6s" aria-hidden="true"></span>
     <div>
       <span class="eyebrow">Garten- und Landschaftsbau · Hünfelden</span>
-      <h1>Garten- und Landschaftsbau mit <em>solidem</em> Fundament.</h1>
+      <h1>Natur erleben. Design <em>genießen.</em></h1>
+      <p class="h1-by">Naturdesign Eichert</p>
       <p class="slogan">Ihre Ansprechpartner für Ihren Traumgarten</p>
       <p class="lead">Treppen, Terrassen, Erdarbeiten und Gartenpflege aus einer Hand. Fachgerecht ausgeführt, termintreu und mit einem festen Ansprechpartner von der Besichtigung bis zur Abnahme.</p>
       <div class="cta">
@@ -331,6 +417,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
         <a class="btn ghost" href="#arbeiten">Arbeiten ansehen</a>
         <a class="btn ghost" href="tel:+4915737586357">0157 37586357</a>
       </div>
+      <a class="rating-badge" href="#referenzen" data-reviews><span class="stars" aria-hidden="true">★★★★★</span><span><b>5,0</b> von 5 · Google-Bewertungen ansehen</span></a>
       <div class="facts">
         <div><b><span data-count="40">40</span> km</b>Einsatzradius</div>
         <div><b>0 €</b>Besichtigung</div>
@@ -342,6 +429,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
       <figcaption>Präziser Zuschnitt direkt auf der Baustelle</figcaption>
     </figure>
   </div>
+
 
   <section class="band tinted" id="leistungen">
     <div class="wrap">
@@ -367,6 +455,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
         <p>Ein Auszug aus aktuellen Projekten. Für die große Ansicht tippen Sie auf ein Bild.</p>
       </div>
       <div class="gallery" id="gallery"></div>
+      <div class="ref-cta"><a class="btn" href="#referenzen" data-reviews>Referenzen ansehen – unsere Kundenbewertungen</a></div>
       
     </div>
   </section>
@@ -374,7 +463,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
   <section class="band warm" id="pflege-abo">
     <div class="wrap">
       <div class="band-head reveal">
-        <div><span class="eyebrow">Pflege-Abo</span><h2>Ihr Garten in festen Händen</h2></div>
+        <div><span class="eyebrow">Pflege-Abo</span><h2>Die Kunst, Natur in Szene zu setzen.</h2><p class="h2-sub">Ihr Garten in festen Händen</p></div>
         <p>Regelmäßige Pflege zu festen Terminen, ohne jedes Mal neu anzufragen. Laufzeit eine Saison von April bis Oktober, abgerechnet in gleichen Monatsraten.</p>
       </div>
       <div class="plans">
@@ -430,7 +519,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
           <h3>1. Tag und Uhrzeit</h3>
           <div class="days" id="days" role="group" aria-label="Tag wählen"></div>
           <div class="slots" id="slots" role="group" aria-label="Uhrzeit wählen"></div>
-          <p class="legend">Mo–Fr 9–19 Uhr · Sa nach Absprache · Durchgestrichen = bereits vergeben</p>
+          <p class="legend">Mo–Fr 9–19 Uhr · Sa nach Absprache</p>
         </div>
         <div class="panel">
           <div id="formWrap">
@@ -479,6 +568,16 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
         <span class="eyebrow">Einsatzgebiet</span>
         <h2>Rund um Hünfelden, bis 40 km</h2>
         <p style="color:var(--muted);margin-top:1rem;max-width:44ch">Tätig im Goldenen Grund, im Taunus und am Rand des Westerwalds. Ihr Ort ist nicht aufgeführt? Fragen Sie gern an.</p>
+        <form class="ortsuche" id="ortForm" role="search" autocomplete="off" novalidate>
+          <label for="ortInput">Liegt Ihr Wohnort in unserem Einsatzgebiet?</label>
+          <div class="ort-row">
+            <input id="ortInput" type="search" inputmode="search" placeholder="Ort eingeben, z. B. Idstein" role="combobox" aria-autocomplete="list" aria-controls="ortSug" aria-expanded="false">
+            <button class="btn" type="submit">Prüfen</button>
+            <ul class="ort-sug" id="ortSug" role="listbox" hidden></ul>
+          </div>
+          <div class="ort-res" id="ortRes" aria-live="polite"></div>
+          <p class="ort-src">Entfernung als Luftlinie ab Hünfelden-Nauheim · Ortsdaten © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap-Mitwirkende</a></p>
+        </form>
       </div>
       <div class="towns">
         <span class="home">Hünfelden</span><span>Bad Camberg</span><span>Limburg</span><span>Diez</span><span>Idstein</span><span>Selters</span><span>Brechen</span><span>Runkel</span><span>Hahnstätten</span><span>Taunusstein</span><span>Weilburg</span><span>Hadamar</span>
@@ -524,6 +623,34 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
     <span>0157 37586357 · naturdesigneichert@web.de · <a href="#impressum">Impressum</a> · <a href="#datenschutz">Datenschutz</a></span>
   </div>
 </footer>
+
+<dialog class="reviews" id="referenzen" aria-labelledby="rv-title">
+  <div class="rv-wrap">
+    <button class="rv-close" type="button" data-close aria-label="Schließen">Schließen</button>
+    <span class="eyebrow">Referenzen</span>
+    <h2 id="rv-title">Das sagen unsere Kunden</h2>
+    <div class="rv-sum"><span class="rv-score">5,0</span><div><span class="stars" role="img" aria-label="5 von 5 Sternen">★★★★★</span><small>4 Bewertungen auf Google</small></div></div>
+    <div class="rv-list">
+        <article class="rv">
+          <div class="rv-head"><span class="rv-av" aria-hidden="true">★</span><div><b>Kundenbewertung</b><small>Nov. 2026 · Google</small></div><span class="stars" role="img" aria-label="5 von 5 Sternen">★★★★★</span></div>
+          <p>5 Sterne für wirklich super Arbeit.</p><p>Herr Eichert war bei uns und hat sich um die Gestaltung einer Hofeinfahrt gekümmert. Von Beratung bis zu Fertigstellung wurden uns alle Fragen beantwortet. Die ausgewählten Materialien in Kombination mit echtem Handwerk und Leidenschaft haben ein perfektes Gesamtbild ergeben.</p><p>Wir empfehlen Naturdesign Eichert unbedingt weiter.</p>
+        </article>
+        <article class="rv">
+          <div class="rv-head"><span class="rv-av" aria-hidden="true">★</span><div><b>Kundenbewertung</b><small>Nov. 2026 · Google</small></div><span class="stars" role="img" aria-label="5 von 5 Sternen">★★★★★</span></div>
+          <p>Absolut top! Das Projekt wurde pünktlich, sauber und mit viel Liebe zum Detail fertig. Freundlich, zuverlässig und hat unsere Wünsche perfekt umgesetzt. Das Ergebnis übertrifft alle Erwartungen.</p><p>Uneingeschränkt weiterzuempfehlen!</p>
+        </article>
+        <article class="rv">
+          <div class="rv-head"><span class="rv-av" aria-hidden="true">★</span><div><b>Kundenbewertung</b><small>Nov. 2026 · Google</small></div><span class="stars" role="img" aria-label="5 von 5 Sternen">★★★★★</span></div>
+          <p>Es wurde eine super Arbeit verrichtet, würde immer wieder da anrufen. Dankeschön</p>
+        </article>
+    </div>
+    <div class="rv-actions">
+      <a class="btn" href="https://g.page/r/CcBVU9oMPepTEBM" target="_blank" rel="noopener">Alle Bewertungen auf Google</a>
+      <a class="btn ghost" href="https://g.page/r/CcBVU9oMPepTEBM/review" target="_blank" rel="noopener">Bewertung schreiben</a>
+    </div>
+    <p class="rv-note">Auszug aus unseren öffentlichen Google-Bewertungen. Namen aus Datenschutzgründen nicht angezeigt.</p>
+  </div>
+</dialog>
 
 <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Bildansicht">
   <button id="lbClose">Schließen</button>
@@ -575,7 +702,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
   addEventListener('scroll',()=>hd.classList.toggle('scrolled',scrollY>10),{passive:true});
   document.querySelectorAll('.services .svc,.plans .plan,.towns span').forEach((el,i,all)=>{el.classList.add('reveal');el.style.transitionDelay=(i%6)*70+'ms'});
   document.querySelectorAll('.band-head.reveal').forEach(el=>el.classList.remove('reveal'));
-  document.querySelectorAll('.band-head > div').forEach(el=>el.classList.add('reveal','from-left'));
+  document.querySelectorAll('.band-head .h2-sub').forEach(el=>{el.classList.add('reveal');el.style.transitionDelay='300ms'});
   document.querySelectorAll('.band-head > p').forEach(el=>{el.classList.add('reveal','from-right');el.style.transitionDelay='120ms'});
   document.querySelectorAll('.gallery .tile').forEach((el,i)=>{el.classList.add('zoom');el.style.transitionDelay=(i%4)*90+'ms'});
   document.querySelectorAll('.book .panel').forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=i*140+'ms'});
@@ -587,6 +714,94 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
   document.querySelectorAll('[data-count]').forEach(el=>{if(rm)return;const n=+el.dataset.count,t0=performance.now();
     const step=t=>{const p=Math.min(1,(t-t0)/1200);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)};requestAnimationFrame(step)});
 
+
+  // ===== Mehr Bewegung =====
+  const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function split(el){
+    const wrap=n=>{[...n.childNodes].forEach(c=>{
+      if(c.nodeType===3){const f=document.createDocumentFragment();
+        c.textContent.split(/(\s+)/).forEach(part=>{if(!part)return;if(/^\s+$/.test(part)){f.appendChild(document.createTextNode(part));return}
+          const w=document.createElement('span');w.className='w';const inner=document.createElement('span');inner.textContent=part;w.appendChild(inner);f.appendChild(w)});
+        c.replaceWith(f)}
+      else if(c.nodeType===1)wrap(c)})};
+    wrap(el);el.classList.add('split');
+    el.querySelectorAll('.w>span').forEach((s,i)=>s.style.transitionDelay=(i*45)+'ms');
+  }
+  const heroH=document.querySelector('.hero h1');split(heroH);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>heroH.classList.add('on')));
+  const heads=[...document.querySelectorAll('.band-head h2,#gebiet h2')];heads.forEach(split);
+  if('IntersectionObserver' in window){
+    const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io2.unobserve(e.target)}}),{threshold:.3});
+    heads.forEach(h=>io2.observe(h));
+  }else heads.forEach(h=>h.classList.add('on'));
+  // Galerie-Kacheln: Wischeffekt statt Zoom
+  document.querySelectorAll('.gallery .tile').forEach(el=>el.classList.remove('zoom'));
+
+  // Ortssuche im Einsatzgebiet
+  (function(){
+    const f=document.getElementById('ortForm'),inp=document.getElementById('ortInput'),sug=document.getElementById('ortSug'),res=document.getElementById('ortRes');
+    let data=null,loading=null,list=[],sel=-1;
+    const norm=t=>t.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ').replace(/ae/g,'a').replace(/oe/g,'o').replace(/ue/g,'u').trim();
+    const esc=t=>t.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    const load=()=>loading||(loading=fetch('assets/data/orte.json').then(r=>r.json()).then(j=>{data=j.map(([n,k,p])=>({n,k,p:p||'',s:norm(n)}));return data}).catch(()=>{loading=null;return null}));
+    inp.addEventListener('focus',load,{once:true});
+    function find(q){
+      const x=norm(q);if(!x||!data)return[];
+      if(/^\d{5}$/.test(x))return data.filter(d=>d.p===x).sort((a,b)=>a.k-b.k);
+      const pre=[],sub=[];
+      data.forEach(d=>{if(d.s.startsWith(x))pre.push(d);else if(d.s.includes(x))sub.push(d)});
+      const sc=d=>(d.s===x?0:d.s.startsWith(x+' ')?1:2);
+      return pre.sort((a,b)=>sc(a)-sc(b)||a.k-b.k).concat(sub.sort((a,b)=>a.k-b.k));
+    }
+    function close(){sug.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');sel=-1}
+    function showSug(){
+      list=find(inp.value).slice(0,7);sug.innerHTML='';sel=-1;
+      if(!list.length||!inp.value.trim()){close();return}
+      list.forEach((d,i)=>{const li=document.createElement('li');li.setAttribute('role','option');li.id='ort-o'+i;
+        li.innerHTML='<span></span><small></small>';li.firstChild.textContent=d.n;li.lastChild.textContent='ca. '+d.k+' km';
+        li.addEventListener('mousedown',e=>{e.preventDefault();pick(d)});sug.appendChild(li)});
+      sug.hidden=false;inp.setAttribute('aria-expanded','true');
+    }
+    function mark(){[...sug.children].forEach((li,i)=>li.setAttribute('aria-selected',String(i===sel)));if(sel>=0)inp.setAttribute('aria-activedescendant','ort-o'+sel)}
+    inp.addEventListener('input',()=>{if(data)showSug();else load().then(showSug)});
+    inp.addEventListener('keydown',e=>{
+      if(sug.hidden)return;
+      if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(sel+1,list.length-1);mark()}
+      else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(sel-1,0);mark()}
+      else if(e.key==='Enter'&&sel>=0){e.preventDefault();pick(list[sel])}
+      else if(e.key==='Escape')close();
+    });
+    inp.addEventListener('blur',()=>setTimeout(close,150));
+    function show(d,q,more){
+      close();res.className='ort-res';
+      document.querySelectorAll('.towns span').forEach(t=>t.classList.toggle('hit',!!d&&(c=>d.s===c||d.s.startsWith(c+' '))(norm(t.textContent))));
+      if(!d&&/^\d{5}$/.test(q.trim())){res.innerHTML='<p>Bitte geben Sie statt der Postleitzahl den Namen Ihres Ortes ein.</p>';return}
+      if(!d){res.innerHTML='<p>Zu „'+esc(q)+'“ haben wir keinen Ort im Umkreis von 55 km gefunden. Prüfen Sie die Schreibweise oder fragen Sie einfach an – wir melden uns.</p><a class="btn ghost" href="#termin">Trotzdem anfragen</a>';return}
+      const note=more?'<br><small style="color:var(--muted)">Es gibt mehrere Orte mit diesem Namen – angezeigt ist der nächstgelegene.</small>':'';
+      if(d.k<=40){res.classList.add('ok');res.innerHTML='<p><strong>Ja, '+esc(d.n)+' liegt in unserem Einsatzgebiet.</strong><br>Entfernung ca. '+d.k+' km.'+note+'</p><a class="btn" href="#termin">Kostenlose Besichtigung anfragen</a>'}
+      else{res.classList.add('near');res.innerHTML='<p><strong>'+esc(d.n)+' liegt mit ca. '+d.k+' km knapp außerhalb unseres üblichen Radius.</strong><br>Fragen Sie trotzdem gern an – oft finden wir eine Lösung.'+note+'</p><a class="btn ghost" href="#termin">Anfrage stellen</a>'}
+    }
+    function pick(d){inp.value=d.n;const same=data.filter(x=>x.s===d.s);show(d,d.n,same.length>1&&d===same.reduce((a,b)=>a.k<=b.k?a:b))}
+    f.addEventListener('submit',async e=>{
+      e.preventDefault();const q=inp.value.trim();if(!q){inp.focus();return}
+      if(!data)await load();
+      if(!data){res.className='ort-res';res.innerHTML='<p>Die Ortssuche ist gerade nicht verfügbar. Fragen Sie gern direkt an.</p>';return}
+      const r=find(q),x=norm(q),exact=r.filter(d=>d.s===x);
+      if(exact.length)show(exact[0],q,exact.length>1);else if(r.length)show(r[0],q,false);else show(null,q,false);
+    });
+  })();
+
+  // Referenzen-Fenster (Google-Bewertungen)
+  (function(){
+    const dlg=document.getElementById('referenzen');if(!dlg||!dlg.showModal)return;
+    const open=e=>{if(e)e.preventDefault();closeMenu();if(!dlg.open)dlg.showModal();history.replaceState(null,'','#referenzen')};
+    const shut=()=>{dlg.close()};
+    dlg.addEventListener('close',()=>{if(location.hash==='#referenzen')history.replaceState(null,'',location.pathname+location.search)});
+    document.querySelectorAll('[data-reviews]').forEach(a=>a.addEventListener('click',open));
+    dlg.querySelector('[data-close]').addEventListener('click',shut);
+    dlg.addEventListener('click',e=>{if(e.target===dlg)shut()});
+    if(location.hash==='#referenzen')open();
+  })();
   // Sanftes Hereingleiten (Inhalt bleibt immer sichtbar)
   if('IntersectionObserver' in window){
     const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);const t=e.target;setTimeout(()=>{t.style.transitionDelay='';t.classList.add('seen');t.classList.remove('reveal','in','from-left','from-right','zoom')},1600)}}),{threshold:.12});
@@ -600,7 +815,7 @@ footer .wrap:not(.impressum){display:flex;border-top:1px solid var(--line);paddi
   const days=[];const d0=new Date();d0.setHours(0,0,0,0);
   for(let i=1;days.length<12;i++){const d=new Date(d0);d.setDate(d0.getDate()+i);if(d.getDay()!==0)days.push(d)}
   const fmt=d=>wd[d.getDay()]+', '+d.getDate()+'. '+mon[d.getMonth()]+' '+d.getFullYear();
-  function taken(d,t){return ((d.getDate()*7+parseInt(t))%5)===0} // Beispiel-Belegung
+  function taken(d,t){return false} // keine Slots als vergeben markieren
   function renderSlots(){
     slotsEl.innerHTML='';if(!selDay)return;
     const times=selDay.getDay()===6?['09:00','11:00']:['09:00','11:00','13:00','15:00','17:00'];
