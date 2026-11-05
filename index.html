@@ -384,13 +384,56 @@ html,body{overflow-x:clip}
 .rv-actions{display:flex;flex-wrap:wrap;gap:.7rem}
 .rv-note{font:400 .72rem var(--mono);color:var(--muted)}
 body:has(.reviews[open]){overflow:hidden}
+
+/* Über uns / Unser Anspruch */
+.about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,5rem);align-items:center}
+.about.flip .about-text{order:2}
+.about-text{display:grid;gap:1rem;max-width:62ch}
+.about-text h2{margin-block:.2rem .4rem}
+.about-text p{color:var(--muted)}
+.about-text .about-lead{color:var(--fg);font-size:1.12rem;line-height:1.65}
+.about-points{list-style:none;margin:.8rem 0 0;padding:1.2rem 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.about-points li{display:grid;gap:.2rem;font-size:.86rem;color:var(--muted)}
+.about-points b{font:400 1.15rem var(--display);color:var(--fg)}
+.about-img{margin:0;position:relative;border-radius:10px;overflow:hidden;aspect-ratio:4/5;background:var(--surface);box-shadow:0 30px 60px -36px rgba(0,0,0,.45)}
+.about-img img{width:100%;height:100%;object-fit:cover;display:block}
+.about-img figcaption{position:absolute;inset:auto 0 0;padding:1rem 1.1rem;color:#fff;font:400 .75rem var(--mono);letter-spacing:.04em;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+@media (max-width:860px){.about-grid{grid-template-columns:1fr}.about.flip .about-text{order:0}.about-img{aspect-ratio:4/3}}
+@media (max-width:520px){.about-points{grid-template-columns:1fr}}
+@media (min-width:1100px){.links{gap:1.8rem}}
+.links a{white-space:nowrap}
+@media (max-width:1099px){.links{display:none}.menu-btn{display:block}}
+
+/* Galerie-Filter */
+.gal-filter{display:flex;flex-wrap:wrap;gap:8px;margin:-1.2rem 0 1.6rem}
+.gal-filter button{font:500 .9rem var(--body);padding:.5rem .95rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.gal-filter button small{font:400 .72rem var(--mono);color:var(--muted);margin-left:.15rem}
+.gal-filter button:hover{border-color:var(--moss)}
+.gal-filter button[aria-pressed="true"]{background:var(--moss);border-color:var(--moss);color:var(--moss-ink)}
+.gal-filter button[aria-pressed="true"] small{color:var(--moss-ink);opacity:.8}
+.tile[hidden]{display:none}
+/* Maschinenpark */
+.machines{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.mc{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.mc figure{margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--l-stone)}
+.mc img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.mc:hover img{transform:scale(1.04)}
+.mc>div{padding:1.1rem 1.2rem 1.3rem;display:grid;gap:.4rem}
+.mc .spec{font:400 .72rem var(--mono);color:var(--sand);text-transform:uppercase;letter-spacing:.08em}
+.mc h3{font-size:1.15rem}
+.mc p{color:var(--muted);font-size:.92rem}
+@media (max-width:1000px){.machines{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.machines{grid-template-columns:1fr}}
+.tile.big{grid-column:1/-1;aspect-ratio:16/8}
+.tile.big .cap b{font-size:1.4rem}
+@media (max-width:760px){.tile.big{aspect-ratio:4/3}}
 </style>
 
 <header>
   <div class="wrap nav">
     <a class="logo" href="#top" aria-label="Naturdesign Eichert, nach oben"><img class="logo-l" width="465" height="120" src="assets/img/logo-hell.png" alt="Naturdesign Eichert"><img class="logo-d" width="465" height="120" src="assets/img/logo-dunkel.png" alt="Naturdesign Eichert"></a>
     <nav class="links" aria-label="Hauptmenü">
-      <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a>
+      <a href="#ueber-uns">Über uns</a><a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a>
       <a class="btn" href="#termin">Besichtigung buchen</a>
     </nav>
     <button class="menu-btn" id="menuOpen" aria-expanded="false" aria-controls="overlayMenu">Menü</button>
@@ -401,7 +444,7 @@ body:has(.reviews[open]){overflow:hidden}
 <div class="overlay-menu" id="overlayMenu" hidden>
   <button id="menuClose">Schließen</button>
   <img class="logo-l om-logo" width="465" height="120" src="assets/img/logo-hell.png" alt=""><img class="logo-d om-logo" width="465" height="120" src="assets/img/logo-dunkel.png" alt="">
-  <a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a><a href="#termin">Termin buchen</a>
+  <a href="#ueber-uns">Über uns</a><a href="#leistungen">Leistungen</a><a href="#arbeiten">Arbeiten</a><a href="#referenzen" data-reviews>Referenzen</a><a href="#pflege-abo">Pflege-Abo</a><a href="#gebiet">Einsatzgebiet</a><a href="#termin">Termin buchen</a>
 </div>
 
 <main id="top">
@@ -448,15 +491,73 @@ body:has(.reviews[open]){overflow:hidden}
     </div>
   </section>
 
+  <section class="band about" id="ueber-uns">
+    <div class="wrap about-grid">
+      <div class="about-text">
+        <span class="eyebrow">Über uns</span>
+        <h2>Ein Betrieb, der für seine Arbeit einsteht.</h2>
+        <p class="about-lead">Naturdesign Eichert ist ein inhabergeführter Fachbetrieb für Garten- und Landschaftsbau aus Hünfelden. Seit drei Jahren planen und bauen wir Außenanlagen für private Bauherren und Gewerbekunden – im Goldenen Grund, im Taunus und darüber hinaus.</p>
+        <p>Wir sind bewusst ein überschaubarer Betrieb geblieben. Für Sie bedeutet das: Wer Ihr Grundstück besichtigt und Sie berät, steht später auch selbst auf der Baustelle. Es gibt keine wechselnden Kolonnen und keine Informationen, die unterwegs verloren gehen – sondern einen festen Ansprechpartner von der ersten Idee bis zur Abnahme.</p>
+        <p>Wir lieben, was wir tun. Ein Garten ist für viele Menschen der Ort, an dem sie zur Ruhe kommen, Zeit mit der Familie verbringen und Gäste empfangen. Diese Verantwortung nehmen wir ernst – bei jedem Auftrag, ganz gleich, wie groß er ist.</p>
+        <ul class="about-points">
+          <li><b>Inhabergeführt</b>Persönlich verantwortlich für jedes Ergebnis</li>
+          <li><b>Ein Ansprechpartner</b>Von der Besichtigung bis zur Abnahme</li>
+          <li><b>Seit 3 Jahren</b>Fest verwurzelt in der Region</li>
+        </ul>
+      </div>
+      <figure class="about-img"><img src="assets/img/klein/pflaster-verlegen.webp" srcset="assets/img/klein/pflaster-verlegen.webp 465w, assets/img/pflaster-verlegen.webp 929w" sizes="(max-width:860px) 100vw, 520px" width="465" height="800" loading="lazy" decoding="async" alt="Verlegen von Verbundpflaster, exakt nach Schnur"><figcaption>Handwerk mit Präzision – Pflaster exakt nach Schnur</figcaption></figure>
+    </div>
+  </section>
+
   <section class="band" id="arbeiten">
     <div class="wrap">
       <div class="band-head reveal">
         <div><span class="eyebrow">Referenzen</span><h2>Ausgeführte Arbeiten</h2></div>
         <p>Ein Auszug aus aktuellen Projekten. Für die große Ansicht tippen Sie auf ein Bild.</p>
       </div>
+      <div class="gal-filter" id="galFilter" role="group" aria-label="Arbeiten nach Bereich filtern">
+        <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+        <button type="button" data-f="treppen" aria-pressed="false">Treppen &amp; Stufenanlagen</button>
+        <button type="button" data-f="pflaster" aria-pressed="false">Pflaster &amp; Wegeflächen</button>
+        <button type="button" data-f="naturstein" aria-pressed="false">Mauerarbeiten</button>
+        <button type="button" data-f="terrassen" aria-pressed="false">Terrassen</button>
+        <button type="button" data-f="zaun" aria-pressed="false">Zaunbau</button>
+      </div>
       <div class="gallery" id="gallery"></div>
       <div class="ref-cta"><a class="btn" href="#referenzen" data-reviews>Referenzen ansehen – unsere Kundenbewertungen</a></div>
       
+    </div>
+  </section>
+
+  <section class="band warm" id="maschinen">
+    <div class="wrap">
+      <div class="band-head reveal">
+        <div><span class="eyebrow">Maschinenpark</span><h2>Starke Technik für saubere Ergebnisse</h2></div>
+        <p>Gepflegte, leistungsfähige Maschinen sind die Grundlage für präzises Arbeiten. So setzen wir Erdarbeiten, Verdichtung und Mauerarbeiten zügig und fachgerecht um.</p>
+      </div>
+      <div class="machines">
+        <article class="mc"><figure><img src="assets/img/klein/unterwegs-region.webp" srcset="assets/img/klein/unterwegs-region.webp 800w, assets/img/unterwegs-region.webp 1400w" sizes="(max-width:760px) 100vw, 320px" loading="lazy" decoding="async" alt="Blauer Pick-up mit Naturdesign-Eichert-Beschriftung"></figure><div><span class="spec">Firmenfahrzeug</span><h3>Pick-up</h3><p>Bringt Werkzeug und Material zuverlässig auf jede Baustelle in der Region.</p></div></article>
+        <article class="mc"><figure><img src="assets/img/klein/bagger-kubota.webp" srcset="assets/img/klein/bagger-kubota.webp 800w, assets/img/bagger-kubota.webp 1400w" sizes="(max-width:760px) 100vw, 320px" loading="lazy" decoding="async" alt="Minibagger Kubota U27-4 auf einem Anhänger"></figure><div><span class="spec">Kubota U27-4</span><h3>Minibagger</h3><p>Kompakt und wendig: für Aushub, Bodenaustausch, Planum und das Setzen schwerer Natursteine – auch auf engen Grundstücken.</p></div></article>
+        <article class="mc"><figure><img src="assets/img/klein/stampfer-bomag.webp" srcset="assets/img/klein/stampfer-bomag.webp 800w, assets/img/stampfer-bomag.webp 1400w" sizes="(max-width:760px) 100vw, 320px" loading="lazy" decoding="async" alt="Gelber Vibrationsstampfer von BOMAG"></figure><div><span class="spec">BOMAG</span><h3>Vibrationsstampfer</h3><p>Für die lagenweise Verdichtung von Unterbau, Gräben und schmalen Flächen – die Grundlage für dauerhaft ebene Beläge.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band about tinted flip" id="anspruch">
+    <div class="wrap about-grid">
+      <div class="about-text">
+        <span class="eyebrow">Unser Anspruch</span>
+        <h2>Präzision, die man nicht sieht – aber jahrelang spürt.</h2>
+        <p class="about-lead">Die Qualität einer Außenanlage entscheidet sich dort, wo später niemand mehr hinschaut: im Unterbau. Ein frostsicherer, sorgfältig verdichteter Aufbau, das richtige Gefälle und eine fachgerechte Entwässerung sorgen dafür, dass Terrassen, Wege und Treppen auch nach vielen Wintern noch eben und sicher liegen.</p>
+        <p>Deshalb arbeiten wir nach den anerkannten Regeln der Technik und messen lieber zweimal, als einmal nachzubessern. Stufen werden maßgenau versetzt, Fugen gleichmäßig ausgeführt, Kanten sauber geschnitten – direkt auf der Baustelle und mit dem Anspruch, dass jedes Detail zum Gesamtbild passt.</p>
+        <p>Zur Präzision gehört für uns auch Verlässlichkeit: klare Absprachen, nachvollziehbare Angebote, Termine, die eingehalten werden, und eine Baustelle, die wir jeden Tag ordentlich hinterlassen. Am Ende übergeben wir Ihnen eine Fläche, auf die wir selbst stolz sind – und an der Sie lange Freude haben.</p>
+        <ul class="about-points">
+          <li><b>Frostsicher</b>Tragfähiger Unterbau nach Regelwerk</li>
+          <li><b>Maßgenau</b>Saubere Fugen, Kanten und Gefälle</li>
+          <li><b>Verlässlich</b>Klare Absprachen, eingehaltene Termine</li>
+        </ul>
+      </div>
+      <figure class="about-img"><img src="assets/img/klein/blockstufen-detail.webp" srcset="assets/img/klein/blockstufen-detail.webp 600w, assets/img/blockstufen-detail.webp 1050w" sizes="(max-width:860px) 100vw, 520px" width="600" height="800" loading="lazy" decoding="async" alt="Anthrazitfarbene Blockstufen mit sauberem Anschluss an eine Mauer aus Mauersteinen"><figcaption>Kanten und Anschlüsse im Detail</figcaption></figure>
     </div>
   </section>
 
@@ -668,28 +769,39 @@ body:has(.reviews[open]){overflow:hidden}
 
   // Galerie
   const works=[
-    ['assets/img/aussentreppe-podest.webp','Außentreppe mit Podest','Blockstufen und Großformatplatten'],
-    ['assets/img/hauszugang-endreinigung.webp','Hier legt der Chef noch selbst Hand an','Endreinigung am neuen Hauszugang'],
-    ['assets/img/weg-stufenanlage.webp','Weg mit Stufenanlage','Großformatplatten mit Einfassung','wide'],
-    ['assets/img/hauszugang-stufen.webp','Hauszugang mit Stufen','Plattenbelag mit Einfassung'],
-    ['assets/img/plattenflaeche.webp','Plattenfläche','Großformatplatten auf Tragschicht'],
-    ['assets/video/doppelstabmattenzaun.mp4','Doppelstabmattenzaun','Gerade Flucht, saubere Pfosten','video'],
-    ['assets/img/podest-detail.webp','Podest im Detail','Fugen- und Kantenbild'],
-    ['assets/img/unterwegs-region.webp','Unterwegs in der Region','Rund um Hünfelden bis 40 km','wide'],
-    ['assets/img/blockstufen-hang.webp','Blockstufen am Hang','Versetzt im Läuferverband'],
-    ['assets/img/verdichtung.webp','Verdichtung','Fachgerechter Unterbau']
+    ['assets/img/blockstufen-mauer.webp','Blockstufen zwischen Mauern','Anthrazit-Blockstufen, eingefasst von Mauersteinen','big','treppen naturstein'],
+    ['assets/img/weg-stufenanlage.webp','Weg mit Stufenanlage','Großformatplatten mit Einfassung','wide','treppen pflaster'],
+    ['assets/img/hauszugang-stufen.webp','Hauszugang mit Stufen','Plattenbelag mit Einfassung','','treppen'],
+    ['assets/img/aussentreppe-podest.webp','Außentreppe mit Podest','Blockstufen und Großformatplatten','','treppen'],
+    ['assets/img/pflaster-verlegen.webp','Pflaster verlegen','Verbundpflaster, exakt nach Schnur','','pflaster'],
+    ['assets/img/terrasse-holzoptik.webp','Terrasse in Holzoptik','Terrassenplatten im Dielenverband','','terrassen'],
+    ['assets/img/hofeinfahrt-natursteinboeschung.webp','Hofeinfahrt mit Natursteinböschung','Verbundpflaster und Bruchsteine','','pflaster naturstein'],
+    ['assets/video/natursteinmauer.mp4','Mauer im Verband','Gleichmäßige Fugen, exakte Flucht','video','naturstein'],
+    ['assets/img/mauer-abends.webp','Mauerbau bis in den Abend','Mauersteine im Verband gesetzt','','naturstein'],
+    ['assets/img/natursteinmauer-bagger.webp','Natursteinmauer im Bau','Große Bruchsteine, mit dem Bagger gesetzt','','naturstein'],
+    ['assets/video/doppelstabmattenzaun.mp4','Doppelstabmattenzaun','Gerade Flucht, saubere Pfosten','video','zaun'],
+    ['assets/img/sichtschutzzaun.webp','Sichtschutzzaun','Doppelstabmatten mit Sichtschutzstreifen','wide','zaun'],
+    ['assets/img/zaun-gruen-hauswand.webp','Doppelstabmattenzaun in Grün','Pfosten auf Fundament, exakt im Lot','','zaun'],
+    ['assets/img/zaunmontage.webp','Zaunmontage an der Straße','Pfosten für Pfosten nach Schnur gesetzt','wide','zaun'],
+    ['assets/img/zaun-abendlicht.webp','Zaun im Abendlicht','Saubere Flucht entlang der Einfassung','','zaun'],
+    ['assets/img/zaun-gruen-gebaeude.webp','Einzäunung einer Außenanlage','Doppelstabmatten in Moosgrün','wide','zaun'],
+    ['assets/img/blockstufen-detail.webp','Blockstufen im Detail','Saubere Kanten, exakter Anschluss an die Mauer','','treppen naturstein'],
+    ['assets/img/terrasse-grossformat.webp','Terrasse aus Großformatplatten','Gleichmäßiges Fugenbild','wide','terrassen'],
+    ['assets/img/pflasterflaeche-hauswand.webp','Hoffläche aus Verbundpflaster','Saubere Anschlüsse bis an die Hauswand','','pflaster'],
+    ['assets/img/blockstufen-hang.webp','Blockstufen am Hang','Versetzt im Läuferverband','','treppen'],
+    ['assets/img/verdichtung.webp','Verdichtung','Fachgerechter Unterbau','','pflaster']
   ];
   const g=document.getElementById('gallery'),lb=document.getElementById('lightbox');
-  works.forEach(([p,t,s,kind])=>{
-    const b=document.createElement('button');b.className='tile reveal'+(kind==='wide'?' wide':'');
+  works.forEach(([p,t,s,kind,cat])=>{
+    const b=document.createElement('button');b.className='tile reveal'+(kind==='wide'?' wide':'')+(kind==='big'?' wide big':'');b.dataset.cat=cat||'';
     const m=document.createElement(kind==='video'?'video':'img');m.className='ph';
     if(kind==='video'){m.muted=true;m.loop=true;m.autoplay=true;m.playsInline=true;m.setAttribute('muted','');m.setAttribute('playsinline','');m.setAttribute('aria-label',t)}else m.alt=t;
     if(kind==='video'){m.preload='metadata'}else{m.loading='lazy';m.decoding='async'}
-    m.src=kind==='video'?p:p.replace('assets/img/','assets/img/klein/');b.appendChild(m);
+    m.src=(kind==='video'||kind==='big')?p:p.replace('assets/img/','assets/img/klein/');b.appendChild(m);
     const c=document.createElement('div');c.className='cap';c.innerHTML='<b></b><small></small>';c.querySelector('b').textContent=t;c.querySelector('small').textContent=s;b.appendChild(c);
     if(kind==='video')b.insertAdjacentHTML('beforeend','<span class="vbadge">Video</span>');
     b.onclick=()=>{const fr=document.getElementById('lbFrame');fr.querySelector('.ph')?.remove();const x=document.createElement(kind==='video'?'video':'img');x.className='ph';x.id='lbPh';
-      if(kind==='video'){x.muted=true;x.loop=true;x.autoplay=true;x.playsInline=true;x.controls=true}else x.alt=t;x.src=p;fr.prepend(x);fr.style.aspectRatio=kind==='wide'?'3/2':'3/4';fr.style.width=kind==='wide'?'min(860px,100%)':'min(560px,100%)';
+      if(kind==='video'){x.muted=true;x.loop=true;x.autoplay=true;x.playsInline=true;x.controls=true}else x.alt=t;x.src=p;fr.prepend(x);const wd=kind==='wide'||kind==='big';fr.style.aspectRatio=wd?'3/2':'3/4';fr.style.width=wd?'min(960px,100%)':'min(560px,100%)';
       document.getElementById('lbCap').textContent=t+' · '+s;lb.hidden=false};
     g.appendChild(b);
   });
@@ -700,11 +812,12 @@ body:has(.reviews[open]){overflow:hidden}
   // Header-Schatten, Staffelung, Zähler
   const hd=document.querySelector('header');
   addEventListener('scroll',()=>hd.classList.toggle('scrolled',scrollY>10),{passive:true});
-  document.querySelectorAll('.services .svc,.plans .plan,.towns span').forEach((el,i,all)=>{el.classList.add('reveal');el.style.transitionDelay=(i%6)*70+'ms'});
+  document.querySelectorAll('.services .svc,.plans .plan,.towns span,.machines .mc').forEach((el,i,all)=>{el.classList.add('reveal');el.style.transitionDelay=(i%6)*70+'ms'});
   document.querySelectorAll('.band-head.reveal').forEach(el=>el.classList.remove('reveal'));
   document.querySelectorAll('.band-head .h2-sub').forEach(el=>{el.classList.add('reveal');el.style.transitionDelay='300ms'});
   document.querySelectorAll('.band-head > p').forEach(el=>{el.classList.add('reveal','from-right');el.style.transitionDelay='120ms'});
   document.querySelectorAll('.gallery .tile').forEach((el,i)=>{el.classList.add('zoom');el.style.transitionDelay=(i%4)*90+'ms'});
+  document.querySelectorAll('.about').forEach(sec=>{const f=sec.classList.contains('flip');sec.querySelector('.about-text').classList.add('reveal',f?'from-right':'from-left');const im=sec.querySelector('.about-img');im.classList.add('reveal',f?'from-left':'from-right');im.style.transitionDelay='150ms'});
   document.querySelectorAll('.book .panel').forEach((el,i)=>{el.classList.add('reveal');el.style.transitionDelay=i*140+'ms'});
   document.querySelectorAll('.note,.foot-brand,.datenschutz,.impressum > div').forEach((el,i)=>el.classList.add('reveal'));
   const bar=document.getElementById('scrollBar');
@@ -729,7 +842,7 @@ body:has(.reviews[open]){overflow:hidden}
   }
   const heroH=document.querySelector('.hero h1');split(heroH);
   requestAnimationFrame(()=>requestAnimationFrame(()=>heroH.classList.add('on')));
-  const heads=[...document.querySelectorAll('.band-head h2,#gebiet h2')];heads.forEach(split);
+  const heads=[...document.querySelectorAll('.band-head h2,#gebiet h2,.about h2')];heads.forEach(split);
   if('IntersectionObserver' in window){
     const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');io2.unobserve(e.target)}}),{threshold:.3});
     heads.forEach(h=>io2.observe(h));
@@ -801,6 +914,20 @@ body:has(.reviews[open]){overflow:hidden}
     dlg.querySelector('[data-close]').addEventListener('click',shut);
     dlg.addEventListener('click',e=>{if(e.target===dlg)shut()});
     if(location.hash==='#referenzen')open();
+  })();
+
+  // Galerie-Filter nach Bereichen
+  (function(){
+    const bar=document.getElementById('galFilter');if(!bar)return;
+    const tiles=[...document.querySelectorAll('#gallery .tile')];
+    bar.querySelectorAll('button').forEach(btn=>{
+      const f=btn.dataset.f,n=f==='alle'?tiles.length:tiles.filter(t=>t.dataset.cat.split(' ').includes(f)).length;
+      btn.insertAdjacentHTML('beforeend',' <small>'+n+'</small>');
+      btn.addEventListener('click',()=>{
+        bar.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+        tiles.forEach(t=>{const show=f==='alle'||t.dataset.cat.split(' ').includes(f);t.hidden=!show;if(show){t.classList.remove('reveal','in');t.classList.add('seen');t.style.opacity='';t.animate([{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:450,easing:'cubic-bezier(.2,.8,.2,1)'})}});
+      });
+    });
   })();
   // Sanftes Hereingleiten (Inhalt bleibt immer sichtbar)
   if('IntersectionObserver' in window){
